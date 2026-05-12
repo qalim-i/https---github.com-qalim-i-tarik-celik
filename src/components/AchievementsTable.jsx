@@ -1,81 +1,101 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { staggerContainer, fadeUp, blurReveal } from '../utils/animations';
-import { SectionHeading, CurveDivider } from './ui';
+import { slowRevealUp } from '../utils/animations';
+import { CrosshairLabel, TrackLineV } from './ui';
 
-const events = [
-  { date: "2025", tournament: "Sentinels Invitational 2025", tier: "A-Tier", role: "Commentator" },
-  { date: "2025", tournament: "SEN City Classic 2025", tier: "Showmatch", role: "Commentator" },
-  { date: "2024", tournament: "SEN City Classic 2024", tier: "Showmatch", role: "Commentator" },
-  { date: "2024", tournament: "Ludwig x Tarik Invitational 2", tier: "A-Tier", role: "Host" },
-  { date: "2023", tournament: "Sentinels Invitational", tier: "B-Tier", role: "Commentator" },
-  { date: "2023", tournament: "G2-Sentinels Showmatch", tier: "Showmatch", role: "Commentator" },
-  { date: "2023", tournament: "VALORANT Masters Tokyo", tier: "S-Tier", role: "Japanese Guest" },
-  { date: "2023", tournament: "Ludwig x Tarik Invitational", tier: "A-Tier", role: "Host" },
-  { date: "2022", tournament: "The Lil Bro Cup", tier: "C-Tier", role: "Commentator" },
+import bostonImg from '../assets/boston major tarik.png';
+import valorantImg from '../assets/tarik-playing-valorant.avif';
+import tariklud from '../assets/ludwigXtarik.jpg';
+
+const achievements = [
+  {
+    rank: "1st",
+    title: "ELEAGUE BOSTON MAJOR",
+    subtitle: "Champion (2018)",
+    desc: "The crowning achievement of tarik's CS:GO career. Secured the first-ever NA Major Championship in a historic Grand Final against FaZe Clan.",
+    image: bostonImg,
+  },
+  {
+    rank: "2nd",
+    title: "CO-STREAM KING",
+    subtitle: "VALORANT (Present)",
+    desc: "Pioneered the co-streaming format, pulling 395K+ concurrent viewers during VCT events—exceeding the official main broadcast.",
+    image: valorantImg,
+  },
+  {
+    rank: "3rd",
+    title: "LUDWIG x TARIK",
+    subtitle: "Invitational",
+    desc: "Co-created one of the most popular community-driven VALORANT tournaments, bringing together the biggest names in North American esports.",
+    image: tariklud,
+  },
 ];
 
 export const AchievementsTable = () => {
   return (
-    <section className="py-32 relative z-10 bg-esports-dark overflow-hidden">
-      <CurveDivider position="top" color="#101014" />
+    <section className="relative py-32 overflow-visible">
+      <div className="px-8 md:px-0">
+        {achievements.map((item, i) => (
+          <motion.div
+            key={i}
+            variants={slowRevealUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            className={`relative flex flex-col md:flex-row items-center gap-12 mb-32 last:mb-0 ${
+              i % 2 === 1 ? 'md:flex-row-reverse' : ''
+            }`}
+          >
+            {/* The giant serif number overlapping the edge of the spine */}
+            {/* FIX: Changed color to text-ink opacity-10 since it sits over the light paper background */}
+            <div className={`absolute top-0 md:top-1/2 md:-translate-y-1/2 z-20 ${
+              i % 2 === 1 ? 'right-0 translate-x-[30%]' : 'left-0 -translate-x-[30%]'
+            }`}>
+              <span className="text-[8rem] md:text-[16rem] font-serif font-bold text-ink opacity-10 drop-shadow-sm select-none">
+                {item.rank}<span className="text-[4rem] md:text-[8rem]">.</span>
+              </span>
+            </div>
 
-      <div className="container mx-auto px-4 max-w-5xl">
-        <SectionHeading
-          badge="EVENT LOG"
-          title={<>Tournament & event<br /><span className="text-gradient-red">history</span></>}
-          subtitle="Recent appearances as host, commentator, and guest across premier esports events."
-          center
-        />
+            {/* The Image (if exists) feathered into the spine */}
+            <div className="w-full md:w-1/2 relative h-[400px]">
+              {item.image ? (
+                <div className={`absolute inset-0 overflow-hidden ${
+                  i % 2 === 1 ? 'mask-feather-left' : 'mask-feather-all'
+                }`}>
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover mix-blend-screen opacity-80"
+                  />
+                </div>
+              ) : (
+                <div className="w-full h-full border border-white/5 flex flex-col items-center justify-center p-8 text-center bg-ink">
+                   <CrosshairLabel light>Tournament Structure</CrosshairLabel>
+                   <p className="font-serif text-paper text-2xl mt-4">$50,000 Prize Pool</p>
+                </div>
+              )}
+            </div>
 
-        <motion.div
-          variants={blurReveal}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-80px" }}
-          className="overflow-hidden rounded-2xl border border-white/8 glass-card"
-        >
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-white/8 bg-white/[0.03]">
-                  <th className="p-5 font-bold text-gray-500 uppercase tracking-[0.15em] text-xs">Date</th>
-                  <th className="p-5 font-bold text-gray-500 uppercase tracking-[0.15em] text-xs">Tournament</th>
-                  <th className="p-5 font-bold text-gray-500 uppercase tracking-[0.15em] text-xs">Tier</th>
-                  <th className="p-5 font-bold text-gray-500 uppercase tracking-[0.15em] text-xs">Role</th>
-                </tr>
-              </thead>
-              <motion.tbody
-                variants={staggerContainer}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, margin: "-80px" }}
-              >
-                {events.map((event, index) => (
-                  <motion.tr
-                    key={index}
-                    variants={fadeUp}
-                    className="border-b border-white/5 hover:bg-white/[0.03] transition-colors group cursor-default"
-                  >
-                    <td className="p-5 font-mono text-sm text-gray-600 group-hover:text-white transition-colors">{event.date}</td>
-                    <td className="p-5 font-semibold text-white group-hover:text-sentinels-red transition-colors">{event.tournament}</td>
-                    <td className="p-5">
-                      <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
-                        event.tier === 'S-Tier' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' :
-                        event.tier === 'A-Tier' ? 'bg-purple-500/10 text-purple-400 border-purple-500/20' :
-                        event.tier === 'B-Tier' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
-                        'bg-gray-500/10 text-gray-400 border-gray-500/20'
-                      }`}>
-                        {event.tier}
-                      </span>
-                    </td>
-                    <td className="p-5 text-gray-400 text-sm font-medium">{event.role}</td>
-                  </motion.tr>
-                ))}
-              </motion.tbody>
-            </table>
-          </div>
-        </motion.div>
+            {/* Text Information Block */}
+            <div className={`w-full md:w-1/2 z-30 ${i % 2 === 1 ? 'text-right md:pr-16' : 'md:pl-16'}`}>
+              <CrosshairLabel light>{item.subtitle}</CrosshairLabel>
+              <h3 className="font-serif text-3xl md:text-5xl text-paper mt-4 mb-6">
+                {item.title}
+              </h3>
+              <p className="text-muted font-sans font-light text-sm leading-relaxed max-w-sm ml-auto mr-auto md:mx-0">
+                {item.desc}
+              </p>
+              
+              <div className={`mt-8 flex gap-8 ${i % 2 === 1 ? 'justify-end' : 'justify-start'}`}>
+                 <TrackLineV className="h-12 bg-crimson" />
+                 <div className="text-left">
+                   <p className="label-tech text-muted-light mb-1">Impact</p>
+                   <p className="font-serif text-paper">Legendary</p>
+                 </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );

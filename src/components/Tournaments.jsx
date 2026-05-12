@@ -1,107 +1,70 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { staggerContainer, fadeUp, scaleInSoft } from '../utils/animations';
-import { SectionHeading, Card, CurveDivider } from './ui';
-import { Trophy, MapPin, Calendar, DollarSign, ChevronDown, Users } from 'lucide-react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { slowRevealUp } from '../utils/animations';
+import { CrosshairLabel, TrackLineH } from './ui';
 
-const tournaments = [
+const timeline = [
   {
-    id: 1, name: "Ludwig x Tarik Invitational 3", prizePool: "$50,000", location: "Los Angeles, CA",
-    dates: "Jan 13–14, 2025", winner: "TBD", runnerUp: "TBD",
+    version: "V.05",
+    date: "JAN 2025",
+    title: "Ludwig x Tarik Invitational 3",
   },
   {
-    id: 2, name: "Ludwig x Tarik Invitational 2", prizePool: "$50,000", location: "Los Angeles, CA",
-    dates: "Jan 13–14, 2024", winner: "Sentinels", runnerUp: "Moist x Shopify",
+    version: "V.04",
+    date: "JAN 2024",
+    title: "Ludwig x Tarik Invitational 2",
   },
   {
-    id: 3, name: "Ludwig x Tarik Invitational", prizePool: "$50,000", location: "Los Angeles, CA",
-    dates: "Jan 14–15, 2023", winner: "The Guard", runnerUp: "TSM",
+    version: "V.03",
+    date: "2023",
+    title: "VALORANT Masters Tokyo",
   },
   {
-    id: 4, name: "The Lil Bro Cup", prizePool: "$10,000", location: "Online",
-    dates: "Oct 25, 2022", winner: "Team Stewart", runnerUp: "Team Brax",
+    version: "V.02",
+    date: "OCT 2022",
+    title: "The Lil Bro Cup",
+  },
+  {
+    version: "V.01",
+    date: "JAN 2018",
+    title: "Boston Major Champion",
   },
 ];
 
 export const Tournaments = () => {
-  const [expandedId, setExpandedId] = useState(null);
-
   return (
-    <section id="tournaments" className="py-32 relative z-10 bg-esports-charcoal overflow-hidden">
-      <CurveDivider position="top" color="#070709" />
+    <section className="relative py-24 px-8 md:px-24">
+      <motion.div
+        variants={slowRevealUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+      >
+        <div className="flex justify-between items-end mb-16">
+          <h2 className="font-serif text-5xl text-paper">Timeline</h2>
+          <CrosshairLabel light>Historic Versions</CrosshairLabel>
+        </div>
 
-      <div className="container mx-auto px-4 max-w-4xl">
-        <SectionHeading
-          badge="ORGANIZED EVENTS"
-          title={<>Tournaments hosted<br /><span className="text-gradient-red">by tarik</span></>}
-          subtitle="From community cups to premier invitationals with $50K prize pools."
-          center
-        />
-
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-80px" }}
-          className="space-y-4"
-        >
-          {tournaments.map((t) => (
-            <motion.div key={t.id} variants={fadeUp}>
-              <div
-                className="glass-card border border-white/8 hover:border-sentinels-red/20 transition-all cursor-pointer overflow-hidden"
-                onClick={() => setExpandedId(expandedId === t.id ? null : t.id)}
-              >
-                <div className="p-6 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-sentinels-red/10 flex items-center justify-center text-sentinels-red border border-sentinels-red/15">
-                      <Trophy size={20} />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-white">{t.name}</h3>
-                      <p className="text-xs text-gray-500 font-medium">{t.dates}</p>
-                    </div>
-                  </div>
-                  <motion.div
-                    animate={{ rotate: expandedId === t.id ? 180 : 0 }}
-                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                  >
-                    <ChevronDown className="text-gray-500" size={20} />
-                  </motion.div>
+        <div className="space-y-0">
+          {timeline.map((entry, i) => (
+            <div key={i} className="group">
+              <TrackLineH className="bg-paper/10" />
+              <div className="grid grid-cols-12 gap-4 py-8 items-center transition-colors hover:bg-paper/[0.02]">
+                <div className="col-span-3 md:col-span-2">
+                  <p className="label-tech text-muted group-hover:text-paper transition-colors">{entry.version}</p>
                 </div>
-
-                <AnimatePresence>
-                  {expandedId === t.id && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ type: "spring", stiffness: 100, damping: 16 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-6 pb-6 pt-2 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-6">
-                        {[
-                          { icon: <DollarSign size={14} />, label: "Prize Pool", value: t.prizePool },
-                          { icon: <MapPin size={14} />, label: "Location", value: t.location },
-                          { icon: <Trophy size={14} className="text-amber-400" />, label: "Winner", value: t.winner },
-                          { icon: <Users size={14} />, label: "Runner-Up", value: t.runnerUp },
-                        ].map((d, i) => (
-                          <div key={i}>
-                            <div className="flex items-center gap-1.5 text-gray-500 mb-1">
-                              {d.icon}
-                              <span className="text-[10px] uppercase tracking-widest font-bold">{d.label}</span>
-                            </div>
-                            <p className="font-semibold text-white text-sm">{d.value}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <div className="col-span-3 md:col-span-2">
+                  <p className="label-tech text-muted-light">{entry.date}</p>
+                </div>
+                <div className="col-span-6 md:col-span-8 text-right md:text-left">
+                  <p className="font-serif text-xl md:text-3xl text-paper">{entry.title}</p>
+                </div>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
-      </div>
+          <TrackLineH className="bg-paper/10" />
+        </div>
+      </motion.div>
     </section>
   );
 };

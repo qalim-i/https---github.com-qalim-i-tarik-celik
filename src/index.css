@@ -1,50 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
-
 @import "tailwindcss";
 
 @theme {
-  --color-sentinels-red: #CE0037;
-  --color-sentinels-red-dark: #9A0029;
-  --color-neon-red: #FF1744;
-  --color-esports-dark: #070709;
-  --color-esports-charcoal: #101014;
-  --color-esports-gray: #1A1A20;
-  --color-esports-light: #26262E;
-  --color-accent-blue: #3B82F6;
-  --color-accent-purple: #8B5CF6;
-  --color-accent-gold: #F59E0B;
+  --color-paper: #8e2727ff;
+  --color-ink: #111111;
+  --color-charcoal: #1A1A1A;
+  --color-crimson: #8A1515;
+  --color-ember: #B03A2E;
+  --color-muted: #a5a5a5ff;
+  --color-muted-light: #999999;
+  --color-card: #FFFFFF;
+  --color-border: #D4CFC7;
 
-  --font-sans: 'Inter', sans-serif;
-  --font-heading: 'Outfit', sans-serif;
-
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-float-slow: float-slow 8s ease-in-out infinite;
-  --animate-float-delay: float 6s ease-in-out 2s infinite;
-  --animate-glow-pulse: glow-pulse 3s ease-in-out infinite;
-  --animate-shimmer: shimmer 2s linear infinite;
-  --animate-gradient: gradient-shift 8s ease infinite;
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(2deg); }
-  }
-  @keyframes float-slow {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-12px) rotate(-1deg); }
-  }
-  @keyframes glow-pulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(206, 0, 55, 0.2); }
-    50% { box-shadow: 0 0 40px rgba(206, 0, 55, 0.4); }
-  }
-  @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-  }
-  @keyframes gradient-shift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
 }
 
 /* ─── Base ───────────────────────────────────── */
@@ -53,111 +21,123 @@
 
   html {
     scroll-behavior: smooth;
+    background-color: var(--color-paper);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
   }
 
   body {
-    background-color: var(--color-esports-dark);
-    color: white;
+    color: var(--color-ink);
     font-family: var(--font-sans);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+    background-color: transparent;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-    letter-spacing: -0.03em;
+    font-family: var(--font-serif);
+    line-height: 1.05;
+    color: var(--color-ink);
+  }
+
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
   }
 }
 
 /* ─── Utilities ──────────────────────────────── */
 @layer utilities {
-  .glass {
-    background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* The Visual Spine Background - Separate from content to prevent masking out children */
+  .spine-bg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 900px;
+    height: 100%;
+    background-color: var(--color-ink);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    box-shadow: 0 0 100px rgba(17, 17, 17, 0.5);
+    filter: url(#liquidSpine);
+    pointer-events: none;
+    z-index: 0;
   }
 
-  .glass-card {
-    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 1.25rem;
+  /* Feathered Image Masking */
+  .mask-feather-bottom {
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  }
+  
+  .mask-feather-all {
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  }
+  
+  .mask-feather-left {
+    mask-image: linear-gradient(to left, black 30%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to left, black 30%, transparent 100%);
   }
 
-  .glass-card-strong {
-    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.04) 100%);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 1.25rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  /* Editorial Card */
+  .editorial-card {
+    background: var(--color-card);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 0;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.04);
   }
 
-  .text-glow {
-    text-shadow: 0 0 20px rgba(206, 0, 55, 0.6), 0 0 40px rgba(206, 0, 55, 0.3);
+  /* Tiny technical labels */
+  .label-tech {
+    font-family: var(--font-sans);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-muted);
   }
 
-  .text-glow-white {
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+  /* Crosshair marker (+) */
+  .marker-crosshair::before {
+    content: '+';
+    margin-right: 12px;
+    font-weight: 300;
+    font-size: 1.2em;
+    opacity: 0.4;
+    color: var(--color-ink);
+  }
+  .marker-crosshair-light::before {
+    content: '+';
+    margin-right: 12px;
+    font-weight: 300;
+    font-size: 1.2em;
+    opacity: 0.4;
+    color: var(--color-paper);
   }
 
-  .text-gradient {
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    background-image: linear-gradient(to right, #ffffff, #9ca3af);
+  /* Vertical tracking lines */
+  .track-line-v {
+    width: 1px;
+    background: var(--color-border);
+  }
+  .track-line-h {
+    height: 1px;
+    background: var(--color-border);
   }
 
-  .text-gradient-red {
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    background-image: linear-gradient(135deg, #FF1744 0%, #CE0037 100%);
+  .text-shadow-cinematic {
+    text-shadow: 0 4px 20px rgba(0,0,0,0.6);
   }
 
-  .glow-border {
-    box-shadow: 0 0 0 1px rgba(206, 0, 55, 0.3), 0 0 20px rgba(206, 0, 55, 0.15);
-  }
-
-  .glow-border-hover:hover {
-    box-shadow: 0 0 0 1px rgba(206, 0, 55, 0.5), 0 0 30px rgba(206, 0, 55, 0.25);
-  }
-
+  /* Hide scrollbar */
   .hide-scrollbar::-webkit-scrollbar { display: none; }
   .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
-/* ─── Curved Section Dividers ────────────────── */
-.curve-divider {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  line-height: 0;
-}
-.curve-divider-top {
-  top: -1px;
-}
-.curve-divider-bottom {
-  bottom: -1px;
-}
-.curve-divider svg {
-  position: relative;
-  display: block;
-  width: calc(100% + 1.3px);
-  height: 80px;
-}
-@media (min-width: 768px) {
-  .curve-divider svg {
-    height: 120px;
-  }
-}
-
-/* ─── Scrollbar ──────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #070709; }
-::-webkit-scrollbar-thumb { background: #1A1A20; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #CE0037; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--color-paper); }
+::-webkit-scrollbar-thumb { background: var(--color-ink); }

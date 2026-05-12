@@ -7,23 +7,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        'sentinels-red': '#CE0037',
-        'esports-dark': '#0B0B0C',
-        'esports-charcoal': '#1A1A1D',
-        'esports-gray': '#2A2A2E',
+        paper: '#e23a3aff',
+        ink: '#111111',
+        charcoal: '#1A1A1A',
+        crimson: '#8A1515',
+        ember: '#B03A2E',
+        muted: '#a5a5a5ff',
+        'muted-light': '#999999',
+        card: '#FFFFFF',
+        border: '#D4CFC7',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        heading: ['Outfit', 'sans-serif'],
+        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
-      animation: {
-        'glow-pulse': 'glow-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-      },
-      keyframes: {
-        'glow-pulse': {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '.5' },
-        }
+      backgroundImage: {
+        'spine-gradient': 'linear-gradient(to right, #0F0F0F, #161616 50%, #0F0F0F)',
+        'fade-to-paper': 'linear-gradient(to bottom, transparent, #EBE7E0)',
+        'fade-to-ink': 'linear-gradient(to bottom, transparent, #111111)',
       }
     },
   },

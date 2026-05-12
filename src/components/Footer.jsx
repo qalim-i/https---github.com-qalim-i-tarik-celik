@@ -1,66 +1,68 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { ChevronUp, MonitorPlay, MessageSquare, Video, Image } from 'lucide-react';
+import { TrackLineH, CrosshairLabel } from './ui';
+import tarikFooter from '../assets/tarik-footer.png';
 
 export const Footer = () => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  const links = [
-    { label: "About", href: "#about" },
-    { label: "Achievements", href: "#highlights" },
-    { label: "Events", href: "#tournaments" },
-    { label: "Gallery", href: "#gallery" },
-  ];
-
   return (
-    <footer className="bg-esports-dark py-16 relative z-10 border-t border-white/5">
-      <div className="container mx-auto px-4">
+    <footer className="relative pt-32 pb-16 px-8 overflow-hidden">
+      
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <img 
+          src={tarikFooter} 
+          alt="Tarik Background" 
+          className="w-full h-full object-cover object-top grayscale mix-blend-luminosity opacity-90"
+        />
+      </div>
+      {/* 
+        Massive Watermark behind the footer 
+        FIX: Made text-ink opacity-5 because it sits over the paper background outside the spine
+      */}
+      {/* <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+        <h1 className="font-serif text-[15rem] md:text-[25rem] text-muted-light opacity-[0.3] select-none">
+          TARIK
+        </h1>
+      </div> */}
 
-        <div className="flex flex-col items-center">
-          {/* Scroll to top */}
-          <motion.button
-            whileHover={{ scale: 1.1, y: -4 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={scrollToTop}
-            className="w-11 h-11 rounded-xl glass flex items-center justify-center text-gray-500 hover:text-white hover:border-sentinels-red/30 transition-all mb-12"
-          >
-            <ChevronUp size={20} />
-          </motion.button>
+      <div className="relative z-10">
+        <TrackLineH className="bg-ink/10 mb-16 mt-24" />
 
-          {/* Nav links */}
-          <nav className="flex gap-8 mb-10">
-            {links.map((l) => (
-              <a key={l.label} href={l.href} className="text-sm text-gray-500 hover:text-white transition-colors font-medium tracking-wider uppercase">
-                {l.label}
-              </a>
-            ))}
-          </nav>
-
-          {/* Social */}
-          <div className="flex gap-4 mb-10">
-            {[
-              { icon: <MonitorPlay size={18} /> },
-              { icon: <MessageSquare size={18} /> },
-              { icon: <Video size={18} /> },
-              { icon: <Image size={18} /> },
-            ].map((s, i) => (
-              <motion.a
-                key={i}
-                href="#"
-                whileHover={{ scale: 1.1, y: -2 }}
-                className="w-10 h-10 rounded-xl glass flex items-center justify-center text-gray-500 hover:text-white hover:border-sentinels-red/30 transition-all"
-              >
-                {s.icon}
-              </motion.a>
-            ))}
+        <div className="flex flex-col md:flex-row justify-between items-start gap-16 md:gap-0 mb-32">
+          {/* Left Block */}
+          <div>
+            <CrosshairLabel>Contact Data</CrosshairLabel>
+            <div className="mt-8 space-y-4">
+              {/* Changed to text-ink since this content sits inside the footer which might not be covered by the spine */}
+              <a className="label-tech text-charcoal hover:text-crimson transition-colors cursor-pointer" href="https://www.twitch.tv/tarik" target="_blank" rel="noopener noreferrer">twitch.tv/tarik</a><br />
+              <a className="label-tech text-charcoal hover:text-crimson transition-colors cursor-pointer" href="https://www.youtube.com/@tarik" target="_blank" rel="noopener noreferrer">youtube.com/@tarik</a><br />
+              <a className="label-tech text-charcoal hover:text-crimson transition-colors cursor-pointer" href="https://www.x.com/tarik" target="_blank" rel="noopener noreferrer">x.com/tarik</a><br />
+              <a className="label-tech text-charcoal hover:text-crimson transition-colors cursor-pointer" href="https://www.instagram.com/officialtarik/" target="_blank" rel="noopener noreferrer">instagram.com/officialtarik/</a><br />
+            </div>
           </div>
 
-          {/* Brand + copyright */}
-          <h2 className="text-4xl font-heading font-black tracking-tighter text-white/[0.06] mb-4 uppercase">Tarik</h2>
-          <p className="text-gray-700 text-xs text-center">
-            © {new Date().getFullYear()} Tarik Celik. All rights reserved.<br />
-            Not affiliated with Riot Games or Sentinels official properties.
+          {/* Right Block - Back to top */}
+          <div className="md:text-right">
+            <button
+              onClick={scrollToTop}
+              className="label-tech text-muted hover:text-charcoal transition-colors"
+            >
+              Return to Origin ↑
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom copyright & dots */}
+        <div className="flex justify-between items-end">
+          <p className="label-tech text-muted">
+            © {new Date().getFullYear()} TARIK CELIK
           </p>
+          <div className="flex gap-2">
+            <div className="w-1.5 h-1.5 bg-crimson" />
+            <div className="w-1.5 h-1.5 bg-ink/20" />
+            <div className="w-1.5 h-1.5 bg-ink/20" />
+          </div>
         </div>
       </div>
     </footer>
