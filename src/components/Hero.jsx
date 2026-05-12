@@ -7,7 +7,7 @@ import tarikHero from '../assets/tarik-valorant.png';
 
 export const Hero = () => {
   return (
-    <section className="relative pt-24 pb-32">
+    <section className="relative pt-24 pb-48 md:pb-32">
       {/* 
         HERO IMAGE MASKING
         The image is absolutely positioned at the top of the spine.
@@ -43,7 +43,7 @@ export const Hero = () => {
         </motion.div>
 
         {/* Main Title - Centered, massive, breaking out of the spine slightly */}
-        <div className="pt-64 pb-20 text-center relative">
+        <div className="pt-48 md:pt-64 pb-20 text-center relative">
           <motion.h1
             variants={slowRevealUp}
             initial="hidden"
@@ -69,7 +69,7 @@ export const Hero = () => {
           variants={slowRevealUp}
           initial="hidden"
           animate="show"
-          className="absolute right-0 translate-x-[20%] md:translate-x-[40%] bottom-0 z-20"
+          className="relative mt-12 mx-8 md:absolute md:right-0 md:translate-x-[40%] md:bottom-0 md:mt-0 md:mx-0 z-20"
         >
           <div className="editorial-card w-64 md:w-80 p-8 bg-card border border-black/10">
             <CrosshairLabel>CELIK</CrosshairLabel>

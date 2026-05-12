@@ -7,7 +7,7 @@ import tarikcool from '../assets/tarik-cool.png';
 
 export const About = () => {
   return (
-    <section id="about" className="relative py-32">
+    <section id="about" className="relative py-16 md:py-32">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-0 relative">
         
         {/* Left Side: Feathered Image emerging from the dark */}
@@ -16,7 +16,7 @@ export const About = () => {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          className="md:col-span-7 relative h-[600px]"
+          className="md:col-span-7 relative h-[350px] md:h-[600px]"
         >
           {/* 
             This image uses mask-feather-all to blend softly into the black background,
@@ -45,7 +45,7 @@ export const About = () => {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="absolute top-20 -right-[40%] w-[120%] z-20"
+            className="relative mt-8 mx-4 md:absolute md:top-20 md:-right-[40%] md:w-[120%] md:mt-0 md:mx-0 z-20"
           >
             <div className="editorial-card bg-card p-10 md:p-16">
               <div className="flex gap-12 mb-12">
